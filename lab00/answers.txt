@@ -1,4 +1,9 @@
-1.
-2.
-3.
-4.
+mv testfile testfile2
+chmod
+dir
+ping
+
+CACLS
+grep -r
+tasklist 
+Taskkill 
