@@ -19,6 +19,13 @@
  * and int (*) (void *, void *), to compute the hash and check
  * for equality.
  */
+
+//  struct simpleStruct
+//   {
+//     int a;
+//     char b;
+//   };
+
 struct HashBucket {
   void *key;
   void *data;
@@ -26,8 +33,15 @@ struct HashBucket {
 };
 
 typedef struct HashTable {
-  // -- TODO --
-  // HINT: Take a look at createHashTable.
+
+    struct HashBucket **data;
+    int size;
+    unsigned int (*hashFunction)(void *);
+    int (*equalFunction)(void *, void *);
+    
+    int num;
+
+   
 } HashTable;
 
 /*
@@ -52,6 +66,10 @@ extern void insertData(HashTable *table, void *key, void *data);
  * This returns the corresponding data for a given key.
  * It returns NULL if the key is not found. 
  */
+
 extern void *findData(HashTable *table, void *key);
+
+
+extern void resize(HashTable *table);
 
 #endif

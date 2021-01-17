@@ -7,10 +7,12 @@
  */
 HashTable *createHashTable(int size, unsigned int (*hashFunction)(void *),
                            int (*equalFunction)(void *, void *)) {
-  int i = 0;
-  HashTable *newTable = malloc(sizeof(HashTable));
+  //int i = 0;
+ int i = 0;
+  HashTable *newTable = (HashTable *) malloc(sizeof(HashTable));
   newTable->size = size;
-  newTable->data = malloc(sizeof(struct HashBucket *) * size);
+  newTable->data =(struct HashBucket **) malloc(sizeof(struct HashBucket *) * size);
+  newTable->num=0;
   for (i = 0; i < size; ++i) {
     newTable->data[i] = NULL;
   }
@@ -18,6 +20,7 @@ HashTable *createHashTable(int size, unsigned int (*hashFunction)(void *),
   newTable->equalFunction = equalFunction;
   return newTable;
 }
+
 
 /*
  * This inserts a key/data pair into a hash table.  To use this
@@ -27,12 +30,47 @@ HashTable *createHashTable(int size, unsigned int (*hashFunction)(void *),
  * Because we only need a set data structure for this spell checker,
  * we can use the string as both the key and data.
  */
+
 void insertData(HashTable *table, void *key, void *data) {
   // -- TODO --
+  
   // HINT:
   // 1. Find the right hash bucket location with table->hashFunction.
   // 2. Allocate a new hash bucket struct.
   // 3. Append to the linked list or create it if it does not yet exist. 
+
+  table->num=table->num+1;
+
+  int hashcode=table->hashFunction(key);
+
+  int position=hashcode%(table->size);
+
+  struct HashBucket *temp;
+  temp=NULL;//malloc(sizeof(struct HashBucket));
+  temp->key=key;
+  temp->data=data;
+
+
+  if(table->data[position]==NULL){
+
+        
+        temp->next=NULL;
+        table->data[position]=temp;
+
+        return;
+  }
+
+  temp->next=table->data[position];
+  table->data[position]=temp;
+
+  // if(table->num/table->size>=2){
+      
+      
+  //       resize(table);
+
+
+  // }
+
 }
 
 /*
@@ -44,4 +82,27 @@ void *findData(HashTable *table, void *key) {
   // HINT:
   // 1. Find the right hash bucket with table->hashFunction.
   // 2. Walk the linked list and check for equality with table->equalFunction.
+
+
+
+}
+
+
+void resize(HashTable *table){
+
+     int size_old=table->size;
+     table->size=2*table->size;
+
+     struct HashBucket **data_old=table->data;    
+     table->data=(struct HashBucket **) malloc(sizeof(struct HashBucket *) * table->size);
+     
+     for(int i=0;i<size_old;i++){
+
+     insertData(table,data_old[i]->key,data_old[i]->data);
+
+
+     }
+
+
+
 }
