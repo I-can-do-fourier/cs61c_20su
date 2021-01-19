@@ -11,4 +11,8 @@ extern void readDictionary(char *dictName);
 
 extern void processInput();
 
+char* str_append(char*s1,char*s2);
+
+char* word_checker(char* word); 
+
 #endif

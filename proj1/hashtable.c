@@ -1,5 +1,12 @@
 #include "hashtable.h"
 #include <stdlib.h>
+#include<stdio.h>
+
+
+
+
+
+
 
 /*
  * This creates a new hash table of the specified size and with
@@ -8,10 +15,10 @@
 HashTable *createHashTable(int size, unsigned int (*hashFunction)(void *),
                            int (*equalFunction)(void *, void *)) {
   //int i = 0;
- int i = 0;
+  int i =0;
   HashTable *newTable = (HashTable *) malloc(sizeof(HashTable));
   newTable->size = size;
-  newTable->data =(struct HashBucket **) malloc(sizeof(struct HashBucket *) * size);
+  newTable->data = malloc(sizeof(struct HashBucket *) * size);
   newTable->num=0;
   for (i = 0; i < size; ++i) {
     newTable->data[i] = NULL;
@@ -41,12 +48,12 @@ void insertData(HashTable *table, void *key, void *data) {
 
   table->num=table->num+1;
 
-  int hashcode=table->hashFunction(key);
+  unsigned int hashcode=table->hashFunction(key);
 
-  int position=hashcode%(table->size);
+  unsigned int position=hashcode%(table->size);
 
   struct HashBucket *temp;
-  temp=NULL;//malloc(sizeof(struct HashBucket));
+  temp=malloc(sizeof(struct HashBucket));
   temp->key=key;
   temp->data=data;
 
@@ -83,7 +90,23 @@ void *findData(HashTable *table, void *key) {
   // 1. Find the right hash bucket with table->hashFunction.
   // 2. Walk the linked list and check for equality with table->equalFunction.
 
+   unsigned int hashcode=table->hashFunction(key);
+   unsigned int position=hashcode%(table->size);
 
+   struct HashBucket *temp=table->data[position];
+
+   while(temp!=NULL){
+
+       if(table->equalFunction(key,temp->key)){
+
+              return temp->data;
+       }
+
+       temp=temp->next;
+
+   }
+
+   return NULL;
 
 }
 
@@ -106,3 +129,25 @@ void resize(HashTable *table){
 
 
 }
+
+ void printHashtable(HashTable *table){
+
+     int size=table->size;
+     
+     for(int i=0;i<size;i++){
+
+          struct HashBucket *temp=table->data[i];
+
+          while(temp!=NULL){
+
+              printf("%s\n",temp->key);
+              temp=temp->next;
+
+          }
+
+     }
+
+
+}
+
+

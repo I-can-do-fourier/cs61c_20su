@@ -72,4 +72,8 @@ extern void *findData(HashTable *table, void *key);
 
 extern void resize(HashTable *table);
 
+
+extern void printHashtable(HashTable *table);
+
+extern void link_test();
 #endif

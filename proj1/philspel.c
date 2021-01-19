@@ -41,7 +41,9 @@ HashTable *dictionary;
 int main(int argc, char **argv) {
   if (argc != 2) {
     fprintf(stderr, "Specify a dictionary\n");
+    system("pause");
     return 0;
+    
   }
   /*
    * Allocate a hash table to store the dictionary.
@@ -54,13 +56,22 @@ int main(int argc, char **argv) {
   fprintf(stderr, "Dictionary loaded\n");
 
   fprintf(stderr, "Processing stdin\n");
+
+  
+  fprintf(stderr,"print the dictionary\n\n");
+
+  printHashtable(dictionary);
+
   processInput();
 
   /*
    * The MAIN function in C should always return 0 as a way of telling
    * whatever program invoked this that everything went OK.
    */
+  system("pause");
   return 0;
+  
+  
 }
 
 /*
@@ -71,6 +82,19 @@ int main(int argc, char **argv) {
 unsigned int stringHash(void *s) {
   char *string = (char *)s;
   // -- TODO --
+  unsigned int len=strlen(string);
+
+  unsigned int hashcode=0;
+
+  for(int i=0;i<len;i++,string++){
+
+    hashcode=hashcode+(*string)*31;
+
+
+  }
+
+  return hashcode;
+
 }
 
 /*
@@ -80,6 +104,9 @@ unsigned int stringHash(void *s) {
 int stringEquals(void *s1, void *s2) {
   char *string1 = (char *)s1;
   char *string2 = (char *)s2;
+
+  return !strcmp(s1,s2);
+  
   // -- TODO --
 }
 
@@ -101,6 +128,29 @@ int stringEquals(void *s1, void *s2) {
  */
 void readDictionary(char *dictName) {
   // -- TODO --
+
+    FILE *fp;
+    char *buff=malloc(sizeof(char)*61);
+    char* filename = dictName;
+ 
+    fp = fopen(filename, "r");
+    if (fp == NULL){
+        printf("Could not open file %s",filename);
+        exit(1);
+    }
+     while(fscanf(fp, "%60s", buff)!=EOF){  
+
+       /*need to consider the character that is larger than 59*/
+
+         int length=strlen(buff);
+         char *word=malloc(sizeof(char)*(length+1));
+         strcpy(word,buff);
+         insertData(dictionary,word,word);
+         memset(buff,'\0',61);
+
+     }  
+    fclose(fp);  
+    
 }
 
 /*
@@ -126,4 +176,94 @@ void readDictionary(char *dictName) {
  */
 void processInput() {
   // -- TODO --
+
+   
+    FILE *fp;
+    char* filename = ".\\sampleInput.txt";
+    char *buff=malloc(sizeof(char)*61);
+
+    fp = fopen(filename, "r");
+    int a=0;
+    char*output =calloc(1,sizeof(char));
+    
+    while(a=fscanf(fp,"%61[a-zA-Z]",buff)!=EOF){
+
+      if(a>0){
+
+       printf("%s\n",buff);
+       
+       output=str_append(output,buff);
+       
+       output=str_append(output,word_checker(buff));
+       
+
+      }
+
+       fscanf(fp,"%[^a-zA-Z]",buff);
+       output=str_append(output,buff);
+
+       
+        
+   }
+
+     
+    printf("%s",output);
+
+    system("pause");
+
+
+
+}
+
+
+
+char* str_append(char*s1,char*s2){
+
+
+   char *cat=malloc(strlen(s1)+strlen(s2)+1);
+
+   strcpy(cat,s1);
+   strcat(cat,s2);
+
+   free(s1);
+ //free(s2);
+
+
+    return cat;
+
+}
+
+
+char* word_checker(char* word){
+
+  
+
+  if(findData(dictionary,word)!=NULL){
+
+  
+     return "\0";
+
+
+  }
+
+  for(int i = 0; word[i]; i++){
+    word[i] = tolower(word[i]);
+}
+  
+  if(findData(dictionary,word)!=NULL){
+
+          return "\0";
+
+  }
+
+  word[0]=toupper(word[0]);
+
+  if(findData(dictionary,word)!=NULL){
+
+          return "\0";
+
+  }
+
+  return " [sic]";
+
 }
