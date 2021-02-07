@@ -15,7 +15,8 @@
 #define c_printHex 34
 
 # ecall wrappers
-.globl print_int, print_str, atoi, sbrk, exit, print_char, fopen, fread, fwrite, fclose, exit2, fflush, ferror, print_hex
+.globl print_int, print_str, atoi, sbrk, exit, print_char, fopen, fread, fwrite, fclose, fflush, ferror, print_hex
+.globl exit2
 
 # helper functions
 .globl file_error, print_int_array, malloc, free, print_num_alloc_blocks, num_alloc_blocks

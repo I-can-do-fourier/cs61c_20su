@@ -3,6 +3,6 @@
     "id": "dot",
     "test_file": "test_dot.s",
     "args": ["-it", "-ms", "-1"],
-    "stdout": "285\n",
+    "stdout": "48\n",
     "exitcode": 0
 }
