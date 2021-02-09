@@ -131,7 +131,7 @@ j inner_loop_end
 
 inner_loop_end:
 
-    ebreak
+    #ebreak
     addi t0 t0 1
     blt t0 a1 outer_loop_start
     j outer_loop_end

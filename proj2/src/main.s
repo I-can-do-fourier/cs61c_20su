@@ -5,7 +5,10 @@
 .import relu.s
 .import argmax.s
 .import utils.s
+.import classify2.s
+.import write_matrix2.s
 .import classify.s
+
 
 .globl main
 
